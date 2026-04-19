@@ -1,8 +1,8 @@
 :root {
   --bg: #f3f6fb;
   --surface: #ffffff;
-  --primary: #2a4d8f;
-  --primary-dark: #1f3c72;
+  --primary: #85adff;
+  --primary-dark: #558dff;
   --text: #1f2937;
   --muted: #64748b;
   --border: #dbe2ef;
@@ -230,4 +230,8 @@ body {
   .card-details {
     grid-template-columns: 1fr;
   }
+}
+
+a {
+  text-decoration: none;
 }
