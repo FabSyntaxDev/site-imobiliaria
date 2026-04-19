@@ -1,0 +1,8 @@
+# Chaves de acesso (Segurança)
+base/config.js
+
+# Pastas de configuração do VS Code
+.vscode/
+
+# Pasta sem utilidade
+1 - antigo_sem_uso/

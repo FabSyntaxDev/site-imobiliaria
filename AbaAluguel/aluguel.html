@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plataforma de Imóveis</title>
+  <link rel="stylesheet" href="aluguel.css" />
+  <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+
+    <!-- Navbar Fixa -->
+  <nav class="navbar">
+    <a href="/index.html" class="navbar-logo">
+      <img src="/assets/logo.png" alt="Tabakal Imobiliaria">
+    </a>
+    
+    <ul class="navbar-menu">
+      <li><a href="/AbaVenda/venda.html">COMPRAR</a></li>
+      <li><a href="/AbaAluguel/aluguel.html" style="color: #6196ff;">ALUGAR</a></li>
+      <li><a href="/vender.html">VENDER</a></li>
+      <li><a href="/sobre.html">A TABAKAL</a></li>
+      <li><a href="/contato.html">CONTATO</a></li>
+    </ul>
+
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="navbar-right">
+      <!--<span class="search-icon">🔍</span>
+      <a href="#" class="portal-link">🛡️ PORTAL DO CLIENTE</a> -->
+      <a href="#" class="enter-btn">PORTAL DO CLIENTE</a>
+    </div>
+  </nav>
+
+ <!-- Conteúdo Principal -->
+
+  <header class="site-header">
+    <div class="container">
+      <h1><br></h1>
+      <p><br></p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="search-bar">
+      <input id="searchInput" type="text" placeholder="Buscar por cidade, UF ou descrição..." />
+    </section>
+
+    <section id="listings" class="listings">
+      <div class="loading">Carregando anúncios...</div>
+    </section>
+  </main>
+
+
+
+  <script type="module" src="aluguel.js"></script>
+  <script type="module" src="/script/script.js"></script>
+</body>
+</html>
