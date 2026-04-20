@@ -1,7 +1,7 @@
 :root {
   --primary: #5b7cfa;
   --secondary: #8fa6ff;
-  --dark: #d4e3ff;
+  --dark: #e5eeff;
   --section-pad: 60px 10%; /* Espaçamento reduzido de 100px para 60px */
 }
 
@@ -22,13 +22,6 @@ body {
   justify-content: center;
 }
 
-.hero-bg {
-  position: absolute;
-  inset: -5%; /* Preenchimento total */
-  background: url("https://picsum.photos/1920/1080") center/cover;
-  filter: brightness(0.4);
-  will-change: transform;
-}
 
 .hero-content {
   position: relative;
