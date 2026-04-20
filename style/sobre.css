@@ -1,7 +1,7 @@
 :root {
   --primary: #5b7cfa;
   --secondary: #8fa6ff;
-  --dark: #91B6FF;
+  --dark: #d4e3ff;
   --section-pad: 60px 10%; /* Espaçamento reduzido de 100px para 60px */
 }
 
@@ -41,7 +41,7 @@ body {
 
 /* SEÇÕES */
 .section { padding: var(--section-pad); }
-.dark { background: var(--dark); color: white; }
+.dark { background: var(--dark); color: rgb(0, 0, 0); }
 
 /* GRID */
 .grid-2 {
