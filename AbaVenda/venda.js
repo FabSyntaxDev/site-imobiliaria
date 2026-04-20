@@ -84,7 +84,7 @@ function renderListings(listings) {
       
       const endereco = item.endereco ? escapeHtml(item.endereco) : 'Endereço não informado';
       const location = [item.bairro, item.cidade, item.uf].filter(Boolean).join(', ') || 'Localização não informada';
-      const descricao = item.descricao ? truncateText(escapeHtml(item.descricao), 120) : 'Aluguel de imóvel';
+      const descricao = item.descricao ? truncateText(escapeHtml(item.descricao), 80) : 'Aluguel de imóvel';
       const photoUrl = getPhotoUrl(item.fotos);
 
       return `
