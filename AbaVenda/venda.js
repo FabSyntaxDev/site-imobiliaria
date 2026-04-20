@@ -1,6 +1,6 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
 import { CONFIG } from '../base/config.js';
+
 const SUPABASE_URL = CONFIG.SUPABASE_URL;
 const SUPABASE_ANON_KEY = CONFIG.SUPABASE_ANON_KEY;
 
@@ -9,6 +9,33 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const listingsContainer = document.getElementById('listings');
 const searchInput = document.getElementById('searchInput');
 let allListings = [];
+
+// --- Utilitários ---
+
+function formatarMoeda(valor) {
+  if (valor == null || isNaN(valor)) {
+    return null; // Retorna null para facilitar a validação ternária abaixo
+  }
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(valor);
+}
+
+function truncateText(text, maxLength) {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).trimEnd() + '...';
+}
+
+function escapeHtml(value) {
+  const text = String(value);
+  return text.replace(/[&<>\"]+/g, (match) => {
+    const escape = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
+    return escape[match];
+  });
+}
+
+// --- Lógica Principal ---
 
 searchInput.addEventListener('input', () => {
   const filter = searchInput.value.toLowerCase().trim();
@@ -50,9 +77,11 @@ function renderListings(listings) {
 
   listingsContainer.innerHTML = listings
     .map((item) => {
-      const valorAluguel = item.valor_aluguel != null ? `R$ ${item.valor_aluguel.toFixed(2)}` : 'Valor indisponível';
-      const condominio = item.valor_condominio != null ? `Cond. R$ ${item.valor_condominio.toFixed(2)}` : 'Cond. não informado';
-      const iptu = item.valor_iptu != null ? `IPTU R$ ${item.valor_iptu.toFixed(2)}` : 'IPTU não informado';
+      // Aplicação da Máscara de Moeda
+      const valorExibido = formatarMoeda(item.valor_aluguel) || 'Valor indisponível';
+      const condExibido = item.valor_condominio != null ? `Cond. ${formatarMoeda(item.valor_condominio)}` : 'Cond. não informado';
+      const iptuExibido = item.valor_iptu != null ? `IPTU ${formatarMoeda(item.valor_iptu)}` : 'IPTU não informado';
+      
       const endereco = item.endereco ? escapeHtml(item.endereco) : 'Endereço não informado';
       const location = [item.bairro, item.cidade, item.uf].filter(Boolean).join(', ') || 'Localização não informada';
       const descricao = item.descricao ? truncateText(escapeHtml(item.descricao), 120) : 'Aluguel de imóvel';
@@ -67,12 +96,12 @@ function renderListings(listings) {
             <div class="card-price-row">
               <div>
                 <p class="card-title">${descricao}</p>
-                <p class="card-meta">${escapeHtml(condominio)} • ${escapeHtml(iptu)}</p>
+                <p class="card-meta">${escapeHtml(condExibido)} • ${escapeHtml(iptuExibido)}</p>
               </div>
             </div>
 
             <div class="card-price">
-              <strong>${valorAluguel}</strong>
+              <strong>${valorExibido}</strong>
             </div>
 
             <div class="card-features">
@@ -94,47 +123,35 @@ function renderListings(listings) {
     .join('');
 }
 
+// --- Funções de Foto e Storage ---
+
 function getPhotoUrl(raw) {
   const defaultUrl = 'https://images.unsplash.com/photo-1560185127-6db2ff084534?auto=format&fit=crop&w=900&q=80';
-  if (!raw) {
-    return defaultUrl;
-  }
+  if (!raw) return defaultUrl;
 
   const values = normalizePhotoField(raw);
   const firstValue = values.find((value) => value != null);
-  if (!firstValue) {
-    return defaultUrl;
-  }
+  if (!firstValue) return defaultUrl;
 
   if (typeof firstValue === 'string') {
     const extracted = extractFirstHttpUrl(firstValue);
-    if (extracted) {
-      return extracted;
-    }
+    if (extracted) return extracted;
     return getStorageUrl(firstValue, defaultUrl);
   }
 
   if (typeof firstValue === 'object') {
-    if (firstValue.url) {
-      return firstValue.url;
-    }
-    if (firstValue.path) {
-      return getStorageUrl(firstValue.path, defaultUrl);
-    }
+    if (firstValue.url) return firstValue.url;
+    if (firstValue.path) return getStorageUrl(firstValue.path, defaultUrl);
   }
 
   return defaultUrl;
 }
 
 function normalizePhotoField(raw) {
-  if (Array.isArray(raw)) {
-    return raw;
-  }
+  if (Array.isArray(raw)) return raw;
   if (typeof raw === 'string') {
     const urls = extractUrls(raw);
-    if (urls.length) {
-      return urls;
-    }
+    if (urls.length) return urls;
     return parseRawPhotoString(raw);
   }
   return [];
@@ -153,18 +170,12 @@ function extractFirstHttpUrl(raw) {
 function parseRawPhotoString(raw) {
   try {
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) {
-      return parsed;
-    }
-    return [parsed];
+    return Array.isArray(parsed) ? parsed : [parsed];
   } catch (error) {
     try {
       const normalized = raw.replace(/'/g, '"');
       const parsed = JSON.parse(normalized);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-      return [parsed];
+      return Array.isArray(parsed) ? parsed : [parsed];
     } catch (_error) {
       return [raw];
     }
@@ -172,33 +183,10 @@ function parseRawPhotoString(raw) {
 }
 
 function getStorageUrl(path, fallback) {
-  if (!path) {
-    return fallback;
-  }
-
+  if (!path) return fallback;
   const normalizedPath = path.replace(/^\/?imovel-fotos\//, '');
   const { data } = supabase.storage.from('imovel-fotos').getPublicUrl(normalizedPath);
   return data?.publicUrl || fallback;
-}
-
-function truncateText(text, maxLength) {
-  if (text.length <= maxLength) {
-    return text;
-  }
-  return text.slice(0, maxLength).trimEnd() + '...';
-}
-
-function escapeHtml(value) {
-  const text = String(value);
-  return text.replace(/[&<>\"]+/g, (match) => {
-    const escape = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;'
-    };
-    return escape[match];
-  });
 }
 
 fetchListings();
