@@ -78,5 +78,61 @@ async function renderizarDestaquesAluguel() {
     `).join('');
 }
 
+// fim de locação
+
+async function renderizarDestaquesVenda() {
+    console.log("Iniciando busca de vendas no Supabase...");
+
+    const { data: imoveis, error } = await supabase
+        .from('imoveis')
+        .select('*')
+        .eq('aluguel', false) // Diferença solicitada: apenas vendas
+        .order('data_criacao', { ascending: false }) 
+        .limit(3); 
+
+    if (error) {
+        console.error('Erro retornado pelo Supabase (Venda):', error.message);
+        return;
+    }
+
+    const container = document.getElementById('grid-venda'); // ID diferente para a seção de venda
+    
+    if (!container) {
+        console.error("ERRO: O elemento #grid-venda não foi encontrado no HTML!");
+        return;
+    }
+
+    if (imoveis.length === 0) {
+        container.innerHTML = "<p>Nenhum imóvel à venda encontrado.</p>";
+        return;
+    }
+
+    container.innerHTML = imoveis.map(imovel => `
+        <div class="card-imovel-tabakal">
+            <div class="img-container">
+                <img src="${imovel.fotos?.[0] || 'assets/placeholder.jpg'}" alt="Imóvel">
+            </div>
+            <div class="corpo-card">
+                <h3 class="titulo-anuncio">${imovel.descricao?.substring(0, 50) || 'Sem título'}...</h3>
+                <p class="valores-condo">Cond. R$ ${imovel.valor_condominio || '0'} • IPTU R$ ${imovel.valor_iptu || '0'}</p>
+                
+                <p class="preco-principal">R$ ${imovel.valor_aluguel?.toLocaleString('pt-BR')}</p>
+                
+                <div class="badges-info">
+                    <div class="badge-item"><span class="badge-valor">${imovel.metragem}m²</span><span class="badge-label">Área</span></div>
+                    <div class="badge-item"><span class="badge-valor">${imovel.quartos}</span><span class="badge-label">Quartos</span></div>
+                    <div class="badge-item"><span class="badge-valor">${imovel.vagas}</span><span class="badge-label">Vagas</span></div>
+                </div>
+                <p class="localizacao-texto">${imovel.bairro || 'Consulte'}, ${imovel.cidade || 'Brasília'}</p>
+                
+                <a href="./AbaVenda/detalhes.html?id=${imovel.id}">
+                    <button class="btn-mais-detalhes">Mais Detalhes</button>
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+
 // Chama a função ao carregar a página
 renderizarDestaquesAluguel();
+renderizarDestaquesVenda();
