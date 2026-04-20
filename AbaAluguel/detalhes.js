@@ -69,7 +69,6 @@ function renderProperty(item) {
 
       <div class="property-summary">
         <div class="summary-box">
-          <p class="detail-title">${escapeHtml(item.descricao || 'Imóvel para aluguel')}</p>
           <p>${escapeHtml(location)}</p>
         </div>
 

@@ -81,15 +81,25 @@ body {
 
 .gallery-main {
   position: relative;
-  min-height: 320px;
-  background: #f8fafc;
+  /* Definimos uma altura fixa para o container não pular */
+  height: 450px; 
+  background: #222; /* Fundo escuro ou neutro para preencher as sobras */
   line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
 }
 
 .gallery-main img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  /* A imagem ocupará no máximo o tamanho do container */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  /* 'contain' garante que a foto apareça inteira sem cortes */
+  object-fit: contain; 
   display: block;
 }
 
@@ -246,9 +256,10 @@ body {
   }
 }
 
+/* Ajuste para telas menores (responsividade) */
 @media (max-width: 640px) {
-  .detail-container {
-    width: calc(100% - 1.5rem);
+  .gallery-main {
+    height: 300px; /* Reduz a altura em celulares */
   }
   .gallery-thumbs {
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
