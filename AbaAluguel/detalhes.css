@@ -1,8 +1,8 @@
 :root {
   --bg: #eef2f8;
   --surface: #ffffff;
-  --primary: #1f3c72;
-  --primary-soft: #2a4d8f;
+  --primary: #85adff;
+  --primary-soft: #558dff;
   --text: #111827;
   --muted: #64748b;
   --border: #dbe2ef;
@@ -265,3 +265,5 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
 }
+
+

@@ -105,6 +105,9 @@ function renderProperty(item) {
           <p>Entre em contato com o anunciante para agendar uma visita.</p>
           <a class="detail-link" href="mailto:contato@exemplo.com">contato@exemplo.com</a>
         </div>
+
+
+        
       </div>
     </div>
 
