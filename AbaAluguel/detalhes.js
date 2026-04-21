@@ -33,94 +33,79 @@ async function fetchProperty(id) {
   renderProperty(data);
 }
 
+// ... (mantenha as importações e fetchProperty iguais)
+
 function renderProperty(item) {
   const photoUrls = normalizePhotoField(item.fotos);
   const mainPhoto = photoUrls.length ? photoUrls[0] : getDefaultImage();
-  const location = [item.endereco, item.uf].filter(Boolean).join(' - ');
-  const valorAluguel = item.valor_aluguel != null ? `R$ ${item.valor_aluguel.toFixed(2)}` : 'Valor indisponível';
-  const valorCondominio = item.valor_condominio != null ? `R$ ${item.valor_condominio.toFixed(2)}` : 'Não informado';
-  const valorIptu = item.valor_iptu != null ? `R$ ${item.valor_iptu.toFixed(2)}` : 'Não informado';
-  const valorTotal = item.valor_aluguel != null ? `R$ ${(Number(item.valor_aluguel || 0) + Number(item.valor_condominio || 0) + Number(item.valor_iptu || 0)).toFixed(2)}` : 'Não disponível';
+  
+  // Melhoria na lógica de localização para não repetir "Endereço do imóvel"
+  const logradouro = item.endereco || 'Endereço não informado';
+  const cidadeEstado = [item.bairro, item.cidade, item.uf].filter(Boolean).join(' - ');
+
+  const valorAluguel = item.valor_aluguel ? `R$ ${item.valor_aluguel.toLocaleString('pt-BR')}` : 'Sob consulta';
+  const valorTotal = (Number(item.valor_aluguel || 0) + Number(item.valor_condominio || 0) + Number(item.valor_iptu || 0)).toLocaleString('pt-BR');
 
   detailContent.innerHTML = `
-    <div class="detail-top">
-      <div class="detail-gallery">
-        <div class="gallery-main">
-          <img id="detailMainPhoto" src="${escapeHtml(mainPhoto)}" alt="Foto do imóvel" />
-          ${photoUrls.length > 1 ? `
-            <div class="gallery-controls">
-              <button id="prevPhoto" aria-label="Foto anterior">←</button>
-              <button id="nextPhoto" aria-label="Próxima foto">→</button>
-            </div>
-          ` : ''}
-        </div>
-        ${photoUrls.length > 1 ? `
-          <div class="gallery-thumbs">
-            ${photoUrls
-              .map((url, index) => `
-                <button class="gallery-thumb" type="button" data-index="${index}">
-                  <img src="${escapeHtml(url)}" alt="Miniatura ${index + 1}" />
-                </button>
-              `)
-              .join('')}
-          </div>
-        ` : ''}
+    <div class="detail-gallery">
+      <div class="gallery-main">
+        <img id="detailMainPhoto" src="${escapeHtml(mainPhoto)}" alt="Imóvel" />
       </div>
-
-      <div class="property-summary">
-        <div class="summary-box">
-          <p>${escapeHtml(location)}</p>
+      ${photoUrls.length > 1 ? `
+        <div class="gallery-controls">
+          <button id="prevPhoto" aria-label="Anterior">←</button>
+          <button id="nextPhoto" aria-label="Próximo">→</button>
         </div>
-
-        <div class="summary-box summary-row">
-          <div class="summary-item">
-            <strong>Aluguel</strong>
-            <span>${valorAluguel}/mês</span>
-          </div>
-          <div class="summary-item">
-            <strong>Condomínio</strong>
-            <span>${valorCondominio}</span>
-          </div>
-          <div class="summary-item">
-            <strong>IPTU</strong>
-            <span>${valorIptu}</span>
-          </div>
-          <div class="summary-item">
-            <strong>Valor total previsto</strong>
-            <span>${valorTotal}</span>
-          </div>
-        </div>
-
-        <div class="summary-box">
-          <div class="feature-list">
-            <div class="feature-card"><strong>${item.metragem != null ? `${item.metragem} m²` : 'N/A'}</strong>Área</div>
-            <div class="feature-card"><strong>${item.quartos ?? 'N/A'}</strong>Quartos</div>
-            <div class="feature-card"><strong>${item.banheiros ?? 'N/A'}</strong>Banheiros</div>
-            <div class="feature-card"><strong>${item.vagas ?? 'N/A'}</strong>Vagas</div>
-          </div>
-        </div>
-
-        <div class="summary-box">
-          <p class="detail-title">Contatos</p>
-          <p>Entre em contato com o anunciante para agendar uma visita.</p>
-          <a class="detail-link" href="mailto:contato@exemplo.com">contato@exemplo.com</a>
-        </div>
-
-
-        
-      </div>
+      ` : ''}
     </div>
 
-    <div class="property-body">
-      <div class="property-panel">
-        <h2>Descrição completa</h2>
-        <p>${escapeHtml(item.descricao || 'Sem descrição disponível.')}</p>
+    <div class="detail-top">
+      <div class="detail-main-info">
+        <section class="summary-box">
+          <h1 style="margin:0 0 0.5rem 0; font-size: 1.6rem; color: var(--text);">${escapeHtml(logradouro)}</h1>
+          <p style="color: var(--text-light); margin:0;">${escapeHtml(cidadeEstado)}</p>
+        </section>
+
+        <div class="feature-list">
+          <div class="feature-card"><span>Área</span><strong>${item.metragem || '--'} m²</strong></div>
+          <div class="feature-card"><span>Quartos</span><strong>${item.quartos || '0'}</strong></div>
+          <div class="feature-card"><span>Banheiros</span><strong>${item.banheiros || '0'}</strong></div>
+          <div class="feature-card"><span>Vagas</span><strong>${item.vagas || '0'}</strong></div>
+        </div>
+
+        <section class="summary-box">
+          <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text);">Sobre este imóvel</h2>
+          <p style="white-space: pre-line; color: var(--text-light); line-height: 1.6;">${escapeHtml(item.descricao || 'Sem descrição disponível.')}</p>
+        </section>
       </div>
 
-      <div class="property-panel">
-        <h2>Localização</h2>
-        <p>${escapeHtml(location)}</p>
-      </div>
+      <aside class="detail-sidebar">
+        <div class="summary-box sticky-sidebar">
+          <span style="font-weight: 600; color: var(--text-light); font-size: 0.9rem;">Aluguel</span>
+          <span class="price-tag">${valorAluguel}</span>
+          
+          <div class="price-details">
+            <div class="price-row">
+              <span>Condomínio</span> <span>R$ ${Number(item.valor_condominio || 0).toLocaleString('pt-BR')}</span>
+            </div>
+            <div class="price-row">
+              <span>IPTU</span> <span>R$ ${Number(item.valor_iptu || 0).toLocaleString('pt-BR')}</span>
+            </div>
+          </div>
+
+          <div class="total-price-container">
+            <div class="total-row">
+              <span>Total</span> <span>R$ ${valorTotal}</span>
+            </div>
+          </div>
+
+          <div><br></div>
+
+          <a href="https://wa.me/SEUNUMERO" target="_blank" class="btn-contact">
+            Agendar Visita
+          </a>
+        </div>
+      </aside>
     </div>
   `;
 
