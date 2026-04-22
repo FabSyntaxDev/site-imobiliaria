@@ -93,18 +93,22 @@ function renderProperty(item) {
             </div>
           </div>
 
+          <div><br></div>
+
           <div class="total-price-container">
             <div class="total-row">
               <span>Total</span> <span>R$ ${valorTotal}</span>
             </div>
           </div>
 
-          <div><br></div>
+          
 
           <a href="https://wa.me/SEUNUMERO" target="_blank" class="btn-contact">
             Agendar Visita
           </a>
         </div>
+
+        
       </aside>
     </div>
   `;
