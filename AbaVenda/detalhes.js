@@ -59,6 +59,17 @@ function renderProperty(item) {
       ` : ''}
     </div>
 
+    ${photoUrls.length > 1 ? `
+      <div class="gallery-thumbs">
+        ${photoUrls.map((url, index) => `
+          <button class="gallery-thumb" data-index="${index}">
+            <img src="${escapeHtml(url)}" alt="Foto ${index + 1}" />
+        </button>
+            `).join('')}
+        </div>
+      ` : ''}    
+
+
     <div class="detail-top">
       <div class="detail-main-info">
         <section class="summary-box">
