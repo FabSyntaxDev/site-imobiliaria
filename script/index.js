@@ -133,6 +133,49 @@ async function renderizarDestaquesVenda() {
     `).join('');
 }
 
+//fim de venda
+
+document.addEventListener('DOMContentLoaded', () => {
+    const stars = document.querySelectorAll('#starMural .star-gold');
+    const scoreElement = document.getElementById('scoreValue');
+    const targetScore = 4.9;
+
+    const activateMuralAnimation = () => {
+        // 1. Animação da nota numérica crescendo
+        let currentScore = 0;
+        const scoreInterval = setInterval(() => {
+            currentScore += 0.1;
+            if (currentScore >= targetScore) {
+                scoreElement.innerText = targetScore.toFixed(1);
+                clearInterval(scoreInterval);
+            } else {
+                scoreElement.innerText = currentScore.toFixed(1);
+            }
+        }, 30);
+
+        // 2. Animação das estrelas gigantes em sequência (Pulse)
+        stars.forEach((star, index) => {
+            setTimeout(() => {
+                star.classList.add('animate');
+            }, index * 150); // 150ms de atraso entre cada estrela
+        });
+    };
+
+    // Observer para disparar apenas quando o usuário rolar até a seção
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            activateMuralAnimation();
+            observer.disconnect(); // Executa apenas uma vez
+        }
+    }, { threshold: 0.3 }); // Dispara quando 30% da seção estiver visível
+
+    observer.observe(document.querySelector('.tabakal-mural'));
+});
+
+
+
+
+
 // Chama a função ao carregar a página
 renderizarDestaquesAluguel();
 renderizarDestaquesVenda();

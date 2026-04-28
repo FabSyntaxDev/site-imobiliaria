@@ -225,3 +225,145 @@ h1 {
     background: #333;
     color: white;
 }
+
+
+/* Fim da seção de Venda Tabakal */
+
+:root {
+    --google-gold: #FBBC05;
+    --dark-bg: #0F172A; /* Azul marinho muito escuro para contraste profissional */
+    --card-bg: #1E293B;
+    --text-light: #F1F5F9;
+    --text-dim: #94A3B8;
+}
+
+.tabakal-mural {
+    padding: 100px 20px;
+    background-color: var(--dark-bg);
+    font-family: 'Inter', Roboto, sans-serif;
+    color: var(--text-light);
+}
+
+.mural-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Cabeçalho */
+.mural-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.google-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.google-brand img { width: 18px; }
+
+.nota-gigante {
+    font-size: 8rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -5px;
+    background: linear-gradient(180deg, #fff 30%, #94A3B8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Estrelas Gigantes e Animação */
+.stars-gigantes {
+    font-size: 4rem;
+    color: rgba(255,255,255,0.1); /* Cor da estrela vazia */
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.star-gold.animate {
+    color: var(--google-gold);
+    animation: starPulse 0.6s ease-out forwards;
+    opacity: 0; /* Começa invisível para o JS ativar */
+}
+
+@keyframes starPulse {
+    0% { transform: scale(0.5); opacity: 0; filter: blur(5px); }
+    70% { transform: scale(1.2); opacity: 1; filter: blur(0px); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.mural-subtitle {
+    color: var(--text-dim);
+    font-size: 1.2rem;
+}
+
+/* Cards de Comentários */
+.comments-grid {
+    display: grid;
+    grid-template-cols: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.comment-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.user-meta {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.card-stars {
+    color: var(--google-gold);
+    font-size: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.comment-text {
+    color: var(--text-light);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin: 0;
+}
