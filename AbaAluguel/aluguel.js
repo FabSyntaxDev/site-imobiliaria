@@ -42,6 +42,7 @@ async function fetchListings() {
     .from('imoveis')
     .select('*')
     .eq('aluguel', true)
+    .eq('status', true)
     .order('data_criacao', { ascending: false });
 
   if (error) {

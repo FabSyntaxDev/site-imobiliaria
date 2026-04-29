@@ -32,7 +32,8 @@ async function renderizarDestaquesAluguel() {
     const { data: imoveis, error } = await supabase
         .from('imoveis')
         .select('*')
-        .eq('aluguel', true) 
+        .eq('aluguel', true)
+        .eq('status', true)
         .order('data_criacao', { ascending: false }) 
         .limit(3); 
 
@@ -87,6 +88,7 @@ async function renderizarDestaquesVenda() {
         .from('imoveis')
         .select('*')
         .eq('aluguel', false) // Diferença solicitada: apenas vendas
+        .eq('status', true)
         .order('data_criacao', { ascending: false }) 
         .limit(3); 
 
