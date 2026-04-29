@@ -104,7 +104,7 @@
 .btn-cta {
     display: inline-flex;
     align-items: center;
-    background-color: #ff0000;
+    background-color: #53b4ff;
     color: white !important;
     text-decoration: none;
     padding: 16px 28px;
@@ -116,9 +116,9 @@
 }
 
 .btn-cta:hover {
-    background-color: #cc0000;
+    background-color: #268bff;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255, 0, 0, 0.35);
+    box-shadow: 0 10px 25px rgba(10, 6, 255, 0.35);
 }
 
 .arrow {
