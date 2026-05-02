@@ -8,6 +8,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const listingsContainer = document.getElementById('listings');
 const searchInput = document.getElementById('searchInput');
+const filterTipo = document.getElementById('filterTipo');
 let allListings = [];
 
 // --- Utilitários ---
@@ -37,19 +38,28 @@ function escapeHtml(value) {
 
 // --- Lógica Principal ---
 
-searchInput.addEventListener('input', () => {
-  const filter = searchInput.value.toLowerCase().trim();
+function applyFilters() {
+  const searchFilter = searchInput.value.toLowerCase().trim();
+  const tipoFilter = filterTipo.value;
+  
   const filtered = allListings.filter((item) => {
-    return (
-      String(item.endereco || '').toLowerCase().includes(filter) ||
-      String(item.uf || '').toLowerCase().includes(filter) ||
-      String(item.descricao || '').toLowerCase().includes(filter) ||
-      String(item.quartos || '').toLowerCase().includes(filter) ||
-      String(item.banheiros || '').toLowerCase().includes(filter)
+    const matchesSearch = (
+      String(item.endereco || '').toLowerCase().includes(searchFilter) ||
+      String(item.uf || '').toLowerCase().includes(searchFilter) ||
+      String(item.descricao || '').toLowerCase().includes(searchFilter) ||
+      String(item.quartos || '').toLowerCase().includes(searchFilter) ||
+      String(item.banheiros || '').toLowerCase().includes(searchFilter)
     );
+    
+    const matchesTipo = tipoFilter === '' || item.tipo === tipoFilter;
+    
+    return matchesSearch && matchesTipo;
   });
   renderListings(filtered);
-});
+}
+
+searchInput.addEventListener('input', applyFilters);
+filterTipo.addEventListener('change', applyFilters);
 
 async function fetchListings() {
   listingsContainer.innerHTML = '<div class="loading">Carregando anúncios...</div>';
@@ -87,6 +97,7 @@ function renderListings(listings) {
       const location = [item.bairro, item.cidade, item.uf].filter(Boolean).join(', ') || 'Localização não informada';
       const descricao = item.descricao ? truncateText(escapeHtml(item.descricao), 80) : 'Aluguel de imóvel';
       const photoUrl = getPhotoUrl(item.fotos);
+      const tipo = item.tipo || 'Tipo não informado';
 
       return `
         <article class="card">
@@ -97,7 +108,7 @@ function renderListings(listings) {
             <div class="card-price-row">
               <div>
                 <p class="card-title">${descricao}</p>
-                <p class="card-meta">${escapeHtml(condExibido)} • ${escapeHtml(iptuExibido)}</p>
+                <p class="card-meta"><strong>${escapeHtml(tipo)}</strong> • ${escapeHtml(condExibido)} • ${escapeHtml(iptuExibido)}</p>
               </div>
             </div>
 

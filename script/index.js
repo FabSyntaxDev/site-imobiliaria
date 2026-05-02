@@ -63,7 +63,7 @@ async function renderizarDestaquesAluguel() {
             </div>
             <div class="corpo-card">
                 <h3 class="titulo-anuncio">${imovel.descricao?.substring(0, 50) || 'Sem título'}...</h3>
-                <p class="valores-condo">Cond. R$ ${imovel.valor_condominio || '0'} • IPTU R$ ${imovel.valor_iptu || '0'}</p>
+                <p class="valores-condo"><strong>${imovel.tipo || 'Tipo não informado'}</strong> • Cond. R$ ${imovel.valor_condominio || '0'} • IPTU R$ ${imovel.valor_iptu || '0'}</p>
                 <p class="preco-principal">R$ ${imovel.valor_aluguel?.toLocaleString('pt-BR')} <span style="font-size:12px">/mês</span></p>
                 <div class="badges-info">
                     <div class="badge-item"><span class="badge-valor">${imovel.metragem}m²</span><span class="badge-label">Área</span></div>
@@ -116,7 +116,7 @@ async function renderizarDestaquesVenda() {
             </div>
             <div class="corpo-card">
                 <h3 class="titulo-anuncio">${imovel.descricao?.substring(0, 50) || 'Sem título'}...</h3>
-                <p class="valores-condo">Cond. R$ ${imovel.valor_condominio || '0'} • IPTU R$ ${imovel.valor_iptu || '0'}</p>
+                <p class="valores-condo"><strong>${imovel.tipo || 'Tipo não informado'}</strong> • Cond. R$ ${imovel.valor_condominio || '0'} • IPTU R$ ${imovel.valor_iptu || '0'}</p>
                 
                 <p class="preco-principal">R$ ${imovel.valor_aluguel?.toLocaleString('pt-BR')}</p>
                 
