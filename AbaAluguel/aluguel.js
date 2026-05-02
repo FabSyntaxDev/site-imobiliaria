@@ -91,7 +91,7 @@ function renderListings(listings) {
           <div class="card-content">
             <div class="card-price-row">
               <div>
-                <p class="card-title">${descricao}</p>
+                <p class="card-title" style="text-align: justify; text-transform: lowercase;">${descricao}</p>
                 <p class="card-meta"><strong>${escapeHtml(tipo)}</strong> • ${escapeHtml(condominio)} • ${escapeHtml(iptu)}</p>
               </div>
             </div>
