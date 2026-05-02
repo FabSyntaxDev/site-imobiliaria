@@ -8,6 +8,7 @@
 body {
   font-family: Arial, sans-serif;
   color: #333;
+  padding-top: 70px;
 }
 
 /* Navbar fixa */
@@ -135,6 +136,7 @@ body {
   .navbar {
     flex-wrap: nowrap;
     padding: 10px 15px;
+    z-index: 1200;
   }
 
   .navbar-logo img {
@@ -143,6 +145,8 @@ body {
 
   .hamburger {
     display: flex;
+    z-index: 1200;
+    padding: 8px;
   }
 
   .navbar-menu {
@@ -157,11 +161,16 @@ body {
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+    z-index: 1100;
+    display: none;
   }
 
   .navbar-menu.active {
-    max-height: 500px;
+    display: flex;
+    max-height: 1000px;
+    opacity: 1;
   }
 
   .navbar-menu a {
@@ -183,6 +192,29 @@ body {
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-imoveis {
+    min-height: 450px;
+    padding-top: 80px;
+    align-items: flex-start;
+  }
+
+  .hero-imoveis h1 {
+    font-size: 2.2rem;
+  }
+
+  .search-box {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 420px);
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 14px 16px;
   }
 
   .content {
