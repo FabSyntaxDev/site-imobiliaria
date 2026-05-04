@@ -27,7 +27,6 @@ window.selecionar = selecionar;
 
 
 async function renderizarDestaquesAluguel() {
-    console.log("Iniciando busca no Supabase...");
 
     const { data: imoveis, error } = await supabase
         .from('imoveis')
@@ -38,11 +37,10 @@ async function renderizarDestaquesAluguel() {
         .limit(3); 
 
     if (error) {
-        console.error('Erro retornado pelo Supabase:', error.message);
+        console.error('Erro:', error.message);
         return;
     }
 
-    console.log("Imóveis encontrados:", imoveis);
 
     const container = document.getElementById('grid-aluguel');
     
@@ -82,7 +80,6 @@ async function renderizarDestaquesAluguel() {
 // fim de locação
 
 async function renderizarDestaquesVenda() {
-    console.log("Iniciando busca de vendas no Supabase...");
 
     const { data: imoveis, error } = await supabase
         .from('imoveis')
