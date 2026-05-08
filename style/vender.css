@@ -13,7 +13,7 @@
 
 /* Hero Section */
 .hero {
-    background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80') center/cover;
+    background: url('../assets/venda/catedral.jpeg') center/cover;
     height: 400px;
     position: relative;
     display: flex;
