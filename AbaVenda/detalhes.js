@@ -116,7 +116,7 @@ function renderProperty(item) {
 
           
 
-          <a href="https://wa.me/SEUNUMERO" target="_blank" class="btn-contact">
+          <a href="https://wa.me/5561982555552" target="_blank" class="btn-contact">
             Agendar Visita
           </a>
         </div>
